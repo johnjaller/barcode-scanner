@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Barcode scanner",
+    "name": "QR code",
     "slug": "snack-de5d3dc4-7793-4f1e-bf9e-94dfbc560ccd",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -30,6 +30,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-2278062901935043~3560221509"
+      },
       "package": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd",
       "versionCode": 1
     },
@@ -42,7 +45,10 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ], ["expo-ads-admob",
+      {
+        "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+      }]
     ]
   }
 }
