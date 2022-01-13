@@ -1,7 +1,6 @@
 {
   "expo": {
-    "name": "basic-barcodescanner-usage",
-
+    "name": "Barcode scanner",
     "slug": "snack-de5d3dc4-7793-4f1e-bf9e-94dfbc560ccd",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,20 +18,25 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "config":{
-        "googleMobileAdsAppId":"ca-app-pub-2278062901935043/8454118240"
-      }
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-2278062901935043/8454118240"
+      },
+      "bundleIdentifier": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd"
+      ,"buildNumber": "1.0.0"
+      
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
- "plugins": [
+    "plugins": [
       [
         "expo-image-picker",
         {
