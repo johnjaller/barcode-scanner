@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import jsQR from "jsqr";
 import * as Clipboard from "expo-clipboard";
+import {StatusBar} from 'expo-status-bar'
 import {
   Text,
+  Section,
   Image,
   View,
   StyleSheet,
@@ -14,6 +16,7 @@ import {
   Modal,
   FlatList,
   TouchableHighlight,
+  useColorScheme
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import validator from "validator";
@@ -23,6 +26,8 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 export default function App() {
+  const colorTheme=useColorScheme()
+  console.log(colorTheme)
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [modal, setModal] = useState(false);
@@ -66,27 +71,6 @@ export default function App() {
     setHistory(history);
     AsyncStorage.setItem("history", JSON.stringify(history));
   };
-
-  // const handleImagePicking = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   try {
-  //     let result = await ImagePicker.launchImageLibraryAsync({
-  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //       allowsEditing: true,
-  //       aspect: [4, 3],
-  //       quality: 1,
-  //       base64: true,
-  //     });
-
-  //     console.log(result);
-
-  //     if (!result.cancelled) {
-  //       setImage(result.uri);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const handleDelete = (index) => {
     if (history.length > 1) {
@@ -168,36 +152,24 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <StatusBar style='auto'/>
       <Camera
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         flashMode={flash}
         style={StyleSheet.absoluteFillObject}
       >
-        <View style={styles.buttonContainer}>
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              handleFlash();
-            }}
-          > */}
+        <View style={colorTheme==='light'? styles.buttonContainer:styles.buttonDarkContainer}>
+       
               <Ionicons
                       name="flashlight-outline"
-                      color="white"
+                      color={colorTheme==='light'?'black':'white'}
                       size={40}
                       onPress={() => handleFlash()}
                     />
-          {/* </TouchableOpacity> */}
-
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setModal(!modal);
-              setScanned(false);
-            }}
-          > */}
+        
               <Ionicons
                       name="time-outline"
-                      color="white"
+                      color={colorTheme==='light'?'black':'white'}
                       size={40}
                       onPress={() => {
                         setModal(!modal);
@@ -206,11 +178,11 @@ export default function App() {
                     />
           {/* </TouchableOpacity> */}
         </View>
-        <View style={styles.bottomView}>
+        <View style={colorTheme==='light'? styles.bottomView:styles.bottomDarkView}>
           <AdMobBanner
             bannerSize="largeBanner"
             style={styles.ad}
-            adUnitID="ca-app-pub-3940256099942544/6300978111"
+            adUnitID={Platform.OS==='ios'?'ca-app-pub-2278062901935043/8454118240':'ca-app-pub-2278062901935043/9612809751'}
             servePersonalizedAds={true}
             onDidFailToReceiveAdWithError={(e) => console.log(e)}
           />
@@ -218,32 +190,34 @@ export default function App() {
         <Modal
           visible={modal}
           animationType="slide"
-          style={styles.modal}
           onRequestClose={() => {
             setModal(!modal);
             enableBarcode();
           }}
           transparent
         >
-          <View style={styles.modalView}>
+          <View style={colorTheme==='light'? styles.modalView:styles.modalDarkView}>
             <Ionicons
               name="close-outline"
               size={30}
               backgroundColor="grey"
+              color={colorTheme==='light'?'black':'white'}
               style={{ position: "absolute", right: "10%", top: "12%" }}
               onPress={() => {
                 setModal(!modal);
                 setScanned(false);
               }}
             />
-            <Text style={styles.title}>History</Text>
+            <Text style={colorTheme==='light'? styles.title:styles.darkTitle}>History</Text>
 
             {history && history.length > 0 ? (
+              <View style={styles.historyView}> 
+
               <FlatList
                 data={history}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item, index }) => (
-                  <Text key={index}>
+                  <View key={index} style={styles.itemView} >
                     <Text
                       style={styles.item}
                       onPress={() => {
@@ -254,29 +228,39 @@ export default function App() {
                           Alert.alert("Content Copied");
                         }
                       }}
-                    >
+                      >
                       {item}
                     </Text>
+
                     <Ionicons
                       name="copy-outline"
-                      color="grey"
-                      size={25}
+                      color={colorTheme==='light'? 'grey':'white'}
+                      size={30}
                       onPress={() => {
                         Clipboard.setString(item);
                         Alert.alert("Content Copied");
                       }}
-                    />
+                      style={styles.historyButton}
+                      />
                     <Ionicons
                       name="close-outline"
                       color="red"
-                      size={25}
+                      style={styles.deleteButton}
+                      size={40}
                       onPress={() => handleDelete(index)}
-                    />
-                  </Text>
+                      />
+                      </View>
                 )}
-              />
+                />
+                </View>
             ) : (
-              <Text style={styles.item}>No history</Text>
+              <View style={styles.historyView}> 
+
+              <View style={styles.itemView} >
+
+              <Text style={colorTheme==='light'? styles.item:styles.darkItem}>No history</Text>
+              </View>
+              </View>
             )}
           </View>
         </Modal>
@@ -284,24 +268,49 @@ export default function App() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
+ 
+  historyButton:{
+    marginLeft:90,
+    alignSelf:'center'
+  },
+  deleteButton:{
+    marginLeft:10,
+    alignSelf:'center'
+  },
   view: {
     position: "relative",
     top: "50%",
     left: "25%",
   },
+  historyView:{
+    alignItems: 'center',
+    flexWrap: 'wrap', 
+    paddingTop:20
+  },
+  itemView:{
+    flexDirection:'row',
+    alignItems: 'center',
+    flexWrap: 'wrap', 
+    paddingTop:10
+  },
   title: {
     fontSize: 40,
     alignSelf: "flex-start",
   },
-  modal: {},
+  darkTitle: {
+    fontSize: 40,
+    alignSelf: "flex-start",
+    color:'white'
+  },
   item: {
-    textAlign: "center",
-    marginTop: 50,
-    padding: 10,
     fontSize: 18,
-    height: 44,
+    textAlign:'center',
+  },
+  darkItem: {
+    fontSize: 18,
+    textAlign:'center',
+    color:'white'
   },
   modalView: {
     position: "relative",
@@ -310,7 +319,7 @@ const styles = StyleSheet.create({
     height: "50%",
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
+    alignItems: "flex-start",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -320,8 +329,22 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  historyView: {
-    margin: 40,
+  modalDarkView: {
+    position: "relative",
+    top: "50%",
+    backgroundColor: "black",
+    height: "50%",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   container: {
     flex: 1,
@@ -345,7 +368,16 @@ const styles = StyleSheet.create({
   bottomView: {
     width: "100%",
     height: "15%",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: 'white',
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0,
+  },
+  bottomDarkView: {
+    width: "100%",
+    height: "15%",
+    backgroundColor: 'black',
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
@@ -355,13 +387,27 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
+    
   },
   buttonContainer: {
-    flex: 1,
-    backgroundColor: "transparent",
+    flex: 0.08,
+    backgroundColor: 'white',
     flexDirection: "row",
+    height:'20%',
     justifyContent: "space-between",
-    margin: 40,
+    alignItems:'center',
+    paddingTop:40,
+    paddingHorizontal:40
+  },
+  buttonDarkContainer: {
+    flex: 0.08,
+    backgroundColor: 'black',
+    flexDirection: "row",
+    height:'20%',
+    justifyContent: "space-between",
+    alignItems:'center',
+    paddingTop:40,
+    paddingHorizontal:40
   },
   button: {
     flex: 0.1,

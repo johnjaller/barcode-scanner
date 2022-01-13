@@ -2,9 +2,10 @@
   "expo": {
     "name": "QR code",
     "slug": "snack-de5d3dc4-7793-4f1e-bf9e-94dfbc560ccd",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -18,14 +19,16 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "userInterfaceStyle": "automatic",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-2278062901935043/8454118240"
+        "googleMobileAdsAppId": "ca-app-pub-2278062901935043~5740131476"
       },
       "bundleIdentifier": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd"
       ,"buildNumber": "1.0.0"
       
     },
     "android": {
+      "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
