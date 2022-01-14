@@ -182,7 +182,7 @@ export default function App() {
           <AdMobBanner
             bannerSize="largeBanner"
             style={styles.ad}
-            adUnitID={Platform.OS==='ios'?'ca-app-pub-2278062901935043/8454118240':'ca-app-pub-2278062901935043/9612809751'}
+            adUnitID={Platform.OS==='ios'?'ca-app-pub-2278062901935043/8454118240':'ca-app-pub-3940256099942544/6300978111'}
             servePersonalizedAds={true}
             onDidFailToReceiveAdWithError={(e) => console.log(e)}
           />
