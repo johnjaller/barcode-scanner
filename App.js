@@ -173,7 +173,7 @@ export default function App() {
                       size={40}
                       onPress={() => {
                         setModal(!modal);
-                        setScanned(false);
+                       setScanned(true)
                       }}
                     />
           {/* </TouchableOpacity> */}
@@ -205,7 +205,9 @@ export default function App() {
               style={{ position: "absolute", right: "10%", top: "12%" }}
               onPress={() => {
                 setModal(!modal);
-                setScanned(false);
+                setTimeout(() => {
+                  setScanned(false);
+                }, 1000);
               }}
             />
             <Text style={colorTheme==='light'? styles.title:styles.darkTitle}>History</Text>
@@ -219,7 +221,7 @@ export default function App() {
                 renderItem={({ item, index }) => (
                   <View key={index} style={styles.itemView} >
                     <Text
-                      style={styles.item}
+                      style={colorTheme==='light'? styles.item:styles.darkItem}
                       onPress={() => {
                         if (validator.isURL(item)) {
                           Linking.openURL(item);
