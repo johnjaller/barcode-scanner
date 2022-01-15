@@ -57,7 +57,7 @@ export default function App() {
      
         const track = await requestTrackingPermissionsAsync()
         console.log(track)
-        hasTrackingPermission(track.status === 'granted');
+        setHasTrackingPermission(track.status === 'granted');
       
     })();
   
@@ -191,7 +191,7 @@ export default function App() {
             bannerSize="largeBanner"
             style={styles.ad}
             adUnitID={Platform.OS==='ios'?'ca-app-pub-2278062901935043/8454118240':'ca-app-pub-3940256099942544/6300978111'}
-            servePersonalizedAds={true}
+            servePersonalizedAds={(hasTrackingPermission&&Platform.OS==='ios')||Platform.OS==='android'?true:false}
             onDidFailToReceiveAdWithError={(e) => console.log(e)}
           />
         </View>
