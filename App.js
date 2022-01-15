@@ -153,6 +153,12 @@ export default function App() {
     return (
       <View style={styles.view}>
         <Text>Please give camera permission</Text>
+        <Button
+          title="Go to setting and give permission"
+          onPress={() => {
+            Linking.openSettings();
+          }}
+        />
       </View>
     );
   }
@@ -318,6 +324,7 @@ const styles = StyleSheet.create({
   },
   view: {
     position: "relative",
+    top: "50%",
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
