@@ -32,7 +32,8 @@
     "typedarray": "^0.0.6",
     "validator": "^13.7.0",
     "expo-dev-client": "~0.6.3",
-    "expo-tracking-transparency": "~2.0.3"
+    "expo-tracking-transparency": "~2.0.3",
+    "expo-permissions": "~13.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

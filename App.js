@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import jsQR from "jsqr";
 import * as Clipboard from "expo-clipboard";
-import {StatusBar} from 'expo-status-bar'
+import { StatusBar } from "expo-status-bar";
 import {
   Text,
   Section,
@@ -16,7 +16,7 @@ import {
   Modal,
   FlatList,
   TouchableHighlight,
-  useColorScheme
+  useColorScheme,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import validator from "validator";
@@ -24,11 +24,14 @@ import { Camera } from "expo-camera";
 import { AdMobBanner, setTestDeviceIDAsync } from "expo-ads-admob";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useTrackingPermissions,requestTrackingPermissionsAsync } from "expo-tracking-transparency";
+import {
+  useTrackingPermissions,
+  requestTrackingPermissionsAsync,
+} from "expo-tracking-transparency";
 
 export default function App() {
-  const colorTheme=useColorScheme()
-  console.log(colorTheme)
+  const colorTheme = useColorScheme();
+  console.log(colorTheme);
   const [hasPermission, setHasPermission] = useState(null);
   const [hasTrackingPermission, setHasTrackingPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -52,16 +55,14 @@ export default function App() {
   useEffect(() => {
     readItemFromStorage();
     (async () => {
+      const track = await requestTrackingPermissionsAsync();
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-     
-        const track = await requestTrackingPermissionsAsync()
-        console.log(track)
-        setHasTrackingPermission(track.status === 'granted');
-      
+      setHasPermission(status === "granted");
+
+      console.log(track);
+      setHasTrackingPermission(track.status === "granted");
     })();
-  
-}, []);
+  }, []);
   const handleFlash = () => {
     console.log(flash == Camera.Constants.FlashMode.off);
     if (flash === Camera.Constants.FlashMode.off) {
@@ -124,13 +125,14 @@ export default function App() {
       ]);
     } else {
       Alert.prompt(
-        "Content Found",'',
+        "Content Found",
+        "",
         [
           {
             text: "Copy",
 
             onPress: (text) => {
-              Clipboard.setString(text)
+              Clipboard.setString(text);
             },
           },
           {
@@ -150,48 +152,62 @@ export default function App() {
   if (hasPermission === null || hasPermission === false) {
     return (
       <View style={styles.view}>
-       
-          
         <Text>Please give camera permission</Text>
-        
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <StatusBar style='auto'/>
+      <StatusBar style="auto" />
       <Camera
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         flashMode={flash}
         style={StyleSheet.absoluteFillObject}
       >
-        <View style={colorTheme==='light'? styles.buttonContainer:styles.buttonDarkContainer}>
-       
-              <Ionicons
-                      name="flashlight-outline"
-                      color={colorTheme==='light'?'black':'white'}
-                      size={40}
-                      onPress={() => handleFlash()}
-                    />
-        
-              <Ionicons
-                      name="time-outline"
-                      color={colorTheme==='light'?'black':'white'}
-                      size={40}
-                      onPress={() => {
-                        setModal(!modal);
-                       setScanned(true)
-                      }}
-                    />
-          {/* </TouchableOpacity> */}
+        <View
+          style={
+            colorTheme === "light"
+              ? styles.buttonContainer
+              : styles.buttonDarkContainer
+          }
+        >
+          <Ionicons
+            name="flashlight-outline"
+            color={colorTheme === "light" ? "black" : "white"}
+            size={40}
+            onPress={() => handleFlash()}
+          />
+
+          <Ionicons
+            name="time-outline"
+            color={colorTheme === "light" ? "black" : "white"}
+            size={40}
+            onPress={() => {
+              setModal(!modal);
+              setScanned(true);
+            }}
+          />
         </View>
-        <View style={colorTheme==='light'? styles.bottomView:styles.bottomDarkView}>
+        <View
+          style={
+            colorTheme === "light" ? styles.bottomView : styles.bottomDarkView
+          }
+        >
           <AdMobBanner
             bannerSize="largeBanner"
             style={styles.ad}
-            adUnitID={Platform.OS==='ios'?'ca-app-pub-2278062901935043/8454118240':'ca-app-pub-3940256099942544/6300978111'}
-            servePersonalizedAds={(hasTrackingPermission&&Platform.OS==='ios')||Platform.OS==='android'?true:false}
+            adUnitID={
+              Platform.OS === "ios"
+                ? "ca-app-pub-2278062901935043/8454118240"
+                : "ca-app-pub-3940256099942544/6300978111"
+            }
+            servePersonalizedAds={
+              (hasTrackingPermission && Platform.OS === "ios") ||
+              Platform.OS === "android"
+                ? true
+                : false
+            }
             onDidFailToReceiveAdWithError={(e) => console.log(e)}
           />
         </View>
@@ -204,12 +220,16 @@ export default function App() {
           }}
           transparent
         >
-          <View style={colorTheme==='light'? styles.modalView:styles.modalDarkView}>
+          <View
+            style={
+              colorTheme === "light" ? styles.modalView : styles.modalDarkView
+            }
+          >
             <Ionicons
               name="close-outline"
               size={30}
               backgroundColor="grey"
-              color={colorTheme==='light'?'black':'white'}
+              color={colorTheme === "light" ? "black" : "white"}
               style={{ position: "absolute", right: "10%", top: "12%" }}
               onPress={() => {
                 setModal(!modal);
@@ -218,58 +238,67 @@ export default function App() {
                 }, 1000);
               }}
             />
-            <Text style={colorTheme==='light'? styles.title:styles.darkTitle}>History</Text>
+            <Text
+              style={colorTheme === "light" ? styles.title : styles.darkTitle}
+            >
+              History
+            </Text>
 
             {history && history.length > 0 ? (
-              <View style={styles.historyView}> 
+              <View style={styles.historyView}>
+                <FlatList
+                  data={history}
+                  keyExtractor={(item, index) => index}
+                  renderItem={({ item, index }) => (
+                    <View key={index} style={styles.itemView}>
+                      <Text
+                        style={
+                          colorTheme === "light" ? styles.item : styles.darkItem
+                        }
+                        onPress={() => {
+                          if (validator.isURL(item)) {
+                            Linking.openURL(item);
+                          } else {
+                            Clipboard.setString(item);
+                            Alert.alert("Content Copied");
+                          }
+                        }}
+                      >
+                        {item}
+                      </Text>
 
-              <FlatList
-                data={history}
-                keyExtractor={(item, index) => index}
-                renderItem={({ item, index }) => (
-                  <View key={index} style={styles.itemView} >
-                    <Text
-                      style={colorTheme==='light'? styles.item:styles.darkItem}
-                      onPress={() => {
-                        if (validator.isURL(item)) {
-                          Linking.openURL(item);
-                        } else {
+                      <Ionicons
+                        name="copy-outline"
+                        color={colorTheme === "light" ? "grey" : "white"}
+                        size={30}
+                        onPress={() => {
                           Clipboard.setString(item);
                           Alert.alert("Content Copied");
-                        }
-                      }}
-                      >
-                      {item}
-                    </Text>
-
-                    <Ionicons
-                      name="copy-outline"
-                      color={colorTheme==='light'? 'grey':'white'}
-                      size={30}
-                      onPress={() => {
-                        Clipboard.setString(item);
-                        Alert.alert("Content Copied");
-                      }}
-                      style={styles.historyButton}
+                        }}
+                        style={styles.historyButton}
                       />
-                    <Ionicons
-                      name="close-outline"
-                      color="red"
-                      style={styles.deleteButton}
-                      size={40}
-                      onPress={() => handleDelete(index)}
+                      <Ionicons
+                        name="close-outline"
+                        color="red"
+                        style={styles.deleteButton}
+                        size={40}
+                        onPress={() => handleDelete(index)}
                       />
-                      </View>
-                )}
+                    </View>
+                  )}
                 />
-                </View>
-            ) : (
-              <View style={styles.historyView}> 
-
-              <View style={styles.itemView} >
-
-              <Text style={colorTheme==='light'? styles.item:styles.darkItem}>No history</Text>
               </View>
+            ) : (
+              <View style={styles.historyView}>
+                <View style={styles.itemView}>
+                  <Text
+                    style={
+                      colorTheme === "light" ? styles.item : styles.darkItem
+                    }
+                  >
+                    No history
+                  </Text>
+                </View>
               </View>
             )}
           </View>
@@ -279,30 +308,30 @@ export default function App() {
   );
 }
 const styles = StyleSheet.create({
- 
-  historyButton:{
-    marginLeft:90,
-    alignSelf:'center'
+  historyButton: {
+    marginLeft: 90,
+    alignSelf: "center",
   },
-  deleteButton:{
-    marginLeft:10,
-    alignSelf:'center'
+  deleteButton: {
+    marginLeft: 10,
+    alignSelf: "center",
   },
   view: {
     position: "relative",
-    top: "50%",
-    left: "25%",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
   },
-  historyView:{
-    alignItems: 'center',
-    flexWrap: 'wrap', 
-    paddingTop:20
+  historyView: {
+    alignItems: "center",
+    flexWrap: "wrap",
+    paddingTop: 20,
   },
-  itemView:{
-    flexDirection:'row',
-    alignItems: 'center',
-    flexWrap: 'wrap', 
-    paddingTop:10
+  itemView: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+    paddingTop: 10,
   },
   title: {
     fontSize: 40,
@@ -311,16 +340,16 @@ const styles = StyleSheet.create({
   darkTitle: {
     fontSize: 40,
     alignSelf: "flex-start",
-    color:'white'
+    color: "white",
   },
   item: {
     fontSize: 18,
-    textAlign:'center',
+    textAlign: "center",
   },
   darkItem: {
     fontSize: 18,
-    textAlign:'center',
-    color:'white'
+    textAlign: "center",
+    color: "white",
   },
   modalView: {
     position: "relative",
@@ -378,7 +407,7 @@ const styles = StyleSheet.create({
   bottomView: {
     width: "100%",
     height: "15%",
-    backgroundColor: 'white',
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
@@ -387,7 +416,7 @@ const styles = StyleSheet.create({
   bottomDarkView: {
     width: "100%",
     height: "15%",
-    backgroundColor: 'black',
+    backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
@@ -397,27 +426,26 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
-    
   },
   buttonContainer: {
     flex: 0.08,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     flexDirection: "row",
-    height:'20%',
+    height: "20%",
     justifyContent: "space-between",
-    alignItems:'center',
-    paddingTop:40,
-    paddingHorizontal:40
+    alignItems: "center",
+    paddingTop: 40,
+    paddingHorizontal: 40,
   },
   buttonDarkContainer: {
     flex: 0.08,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     flexDirection: "row",
-    height:'20%',
+    height: "20%",
     justifyContent: "space-between",
-    alignItems:'center',
-    paddingTop:40,
-    paddingHorizontal:40
+    alignItems: "center",
+    paddingTop: 40,
+    paddingHorizontal: 40,
   },
   button: {
     flex: 0.1,
@@ -426,4 +454,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
   },
-})
+});
