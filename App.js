@@ -24,11 +24,13 @@ import { Camera } from "expo-camera";
 import { AdMobBanner, setTestDeviceIDAsync } from "expo-ads-admob";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { useTrackingPermissions,requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 
 export default function App() {
   const colorTheme=useColorScheme()
   console.log(colorTheme)
   const [hasPermission, setHasPermission] = useState(null);
+  const [hasTrackingPermission, setHasTrackingPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [modal, setModal] = useState(false);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
@@ -51,9 +53,15 @@ export default function App() {
     readItemFromStorage();
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
+      setHasPermission(status === 'granted');
+     
+        const track = await requestTrackingPermissionsAsync()
+        console.log(track)
+        hasTrackingPermission(track.status === 'granted');
+      
     })();
-  }, []);
+  
+}, []);
   const handleFlash = () => {
     console.log(flash == Camera.Constants.FlashMode.off);
     if (flash === Camera.Constants.FlashMode.off) {
@@ -418,4 +426,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
   },
-});
+})

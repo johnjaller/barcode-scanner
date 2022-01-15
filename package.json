@@ -31,7 +31,8 @@
     "rn-qr-generator": "^1.2.0",
     "typedarray": "^0.0.6",
     "validator": "^13.7.0",
-    "expo-dev-client": "~0.6.3"
+    "expo-dev-client": "~0.6.3",
+    "expo-tracking-transparency": "~2.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

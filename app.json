@@ -2,7 +2,7 @@
   "expo": {
     "name": "QR code",
     "slug": "snack-de5d3dc4-7793-4f1e-bf9e-94dfbc560ccd",
-    "version": "1.0.4",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -23,9 +23,8 @@
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-5437775720988724~7333915175"
       },
-      "bundleIdentifier": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd"
-      ,"buildNumber": "1.0.4"
-      
+      "bundleIdentifier": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd",
+      "buildNumber": "1.0.6"
     },
     "android": {
       "userInterfaceStyle": "automatic",
@@ -37,21 +36,18 @@
         "googleMobileAdsAppId": "ca-app-pub-5437775720988724~5142209565"
       },
       "package": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd",
-      "versionCode": 3
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [
-        "expo-image-picker",
+        "expo-tracking-transparency",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
         }
-      ], ["expo-ads-admob",
-      {
-        "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
-      }]
+      ]
     ]
   }
 }
