@@ -206,7 +206,7 @@ export default function App() {
             adUnitID={
               Platform.OS === "ios"
                 ? "ca-app-pub-2278062901935043/8454118240"
-                : "ca-app-pub-3940256099942544/6300978111"
+                : "ca-app-pub-5437775720988724/1865309532"
             }
             servePersonalizedAds={
               (hasTrackingPermission && Platform.OS === "ios") ||
