@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     height: "50%",
     borderRadius: 20,
     padding: 35,
-    alignItems: "flex-start",
+    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     height: "50%",
     borderRadius: 20,
     padding: 35,
-    alignItems: "flex-start",
+    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
