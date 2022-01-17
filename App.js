@@ -55,12 +55,13 @@ export default function App() {
   useEffect(() => {
     readItemFromStorage();
     (async () => {
+      if(Platform.OS==='ios'){
       const track = await requestTrackingPermissionsAsync();
+      setHasTrackingPermission(track.status === "granted");
+    }
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
-
       console.log(track);
-      setHasTrackingPermission(track.status === "granted");
     })();
   }, []);
   const handleFlash = () => {
@@ -104,50 +105,56 @@ export default function App() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    LogHistory(data);
-    if (validator.isURL(data)) {
-      Alert.alert("URL founded", `Are you sure to open ${data}`, [
-        {
-          text: "Cancel",
-          onPress: () => {
-            console.log("Cancel Pressed");
-            enableBarcode();
-          },
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => {
-            Linking.openURL(data);
-            enableBarcode();
-          },
-        },
-      ]);
-    } else {
-      Alert.prompt(
-        "Content Found",
-        "",
-        [
-          {
-            text: "Copy",
+    if (history.includes(data)) {
+      return;
+    }else
+    {
 
-            onPress: (text) => {
-              Clipboard.setString(text);
-            },
-          },
+      LogHistory(data);
+      if (validator.isURL(data)) {
+        Alert.alert("URL founded", `Are you sure to open ${data}`, [
           {
-            text: "ok",
-
+            text: "Cancel",
             onPress: () => {
+              console.log("Cancel Pressed");
+              enableBarcode();
+            },
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () => {
+              Linking.openURL(data);
               enableBarcode();
             },
           },
-        ],
-        "plain-text",
-        data
-      );
-    }
-  };
+        ]);
+      } else {
+        Alert.prompt(
+          "Content Found",
+          "",
+          [
+            {
+              text: "Copy",
+              
+              onPress: (text) => {
+                Clipboard.setString(text);
+              },
+            },
+            {
+              text: "ok",
+              
+              onPress: () => {
+                enableBarcode();
+              },
+            },
+          ],
+          "plain-text",
+          data
+          );
+        }
+      }
+      };
 
   if (hasPermission === null || hasPermission === false) {
     return (
