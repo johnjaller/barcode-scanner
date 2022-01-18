@@ -26,7 +26,8 @@
       "bundleIdentifier": "com.johnjaller.snackde5d3dc477934f1ebf9e94dfbc560ccd",
       "buildNumber": "1.0.9",
       "infoPlist":{
-        "NSUserTrackingUsageDescription":"This identifier will be used to deliver personalized ads to you."
+        "NSUserTrackingUsageDescription":"This identifier will be used to deliver personalized ads to you.",
+        "NSCameraUsageDescription":"The app require camera permission to scan QR code"
       }
     },
     "android": {
